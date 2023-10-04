@@ -1,0 +1,11 @@
+.custom-container-register {
+    width: 100%;
+    height: 100vh;
+}
+
+.custom-col-register {
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
