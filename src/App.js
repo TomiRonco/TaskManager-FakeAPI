@@ -8,7 +8,7 @@ import SideBars from "./components/sidebars/SideBars";
 function App() {
   return (
     <div className="h-100">
-      <SideBars />
+      <NavBars />
     </div>
   );
 }
