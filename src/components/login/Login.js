@@ -1,77 +1,102 @@
-import React from "react";
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-import { BiSolidUser } from "react-icons/bi";
 
-import "bootstrap/dist/css/bootstrap.css";
 import "./Login.css";
 
+import { Link } from "react-router-dom";
+import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
+
+const initialValues = {
+  email: "",
+  password: "",
+  showPassword: false,
+};
+
 const Login = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState(initialValues);
 
-  const userNameHandler = (event) => {
-    setUserName(event.target.value);
-  };
+  const { handleLogin } = useContext(AuthenticationContext);
 
-  const passwordHandler = (event) => {
-    setPassword(event.target.value);
-  };
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const passwordVisibilityToggle = () => {
-    setShowPassword(!showPassword);
-  };
+  const navigate = useNavigate();
 
-  const toggleLogin = () => {
-    if (userName === "" || password === "") {
-      alert("Por favor, completá todos los campos.");
-    } else {
-      alert("¡Inicio de sesión exitoso!");
-
-      setUserName("");
-      setPassword("");
+  const emailChangeHandler = (event) => {
+    if (emailRef.current.value.length > 0) {
+      emailRef.current.style.borderColor = "";
+      emailRef.current.style.outline = "";
     }
+    setData({ ...data, email: event.target.value });
+  };
+
+  const passwordChangeHandler = (event) => {
+    setData({ ...data, password: event.target.value });
+  };
+
+  const passwordVisibilityToogle = () => {
+    setData({ ...data, showPassword: !data.showPassword });
+  };
+
+  const signInHandler = () => {
+    if (emailRef.current.value.length === 0) {
+      emailRef.current.focus();
+      emailRef.current.style.borderColor = "red";
+      emailRef.current.style.outline = "none";
+      alert("Correo electrónico vacío");
+      return;
+    }
+    if (data.password.length === 0) {
+      passwordRef.current.focus();
+      passwordRef.current.style.borderColor = "red";
+      passwordRef.current.style.outline = "none";
+      alert("Contraseña vacía");
+      return;
+    }
+    handleLogin(data.email);
+    navigate("/home");
   };
 
   return (
-    <div class="container-fluid text-center custom-container">
-      <div class="row align-items-center">
-        <div class="col-9">Fondo</div>
-        <div class="col-3 custom-col bg-primary">
-          <form>
+    <div className="container-fluid custom-container-login">
+      <div className="d-flex justify-content-center align-items-center h-100">
+        <div className="m-auto w-25 text-center">
+          <form className="custom-form">
             <input
               className="form-control"
-              type="text"
-              placeholder="Username"
-              onChange={userNameHandler}
-              value={userName}
+              type="email"
+              placeholder="Correo Electrónico"
+              onChange={emailChangeHandler}
+              value={data.email}
+              ref={emailRef}
             />
-            <div className="d-flex">
+            <div className="d-flex mt-3">
               <input
                 className="form-control"
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                onChange={passwordHandler}
-                value={password}
+                type={data.showPassword ? "text" : "password"}
+                placeholder="Contraseña"
+                onChange={passwordChangeHandler}
+                value={data.password}
+                ref={passwordRef}
               />
               <button
-                className="btn btn-warning"
+                className="btn btn-light"
                 type="button"
-                onClick={passwordVisibilityToggle}
+                onClick={passwordVisibilityToogle}
               >
-                {showPassword ? <BsEye /> : <BsEyeSlash />}
+                {data.showPassword ? <BsEye /> : <BsEyeSlash />}
               </button>
             </div>
-            <p className="login-signup m-auto">
-              ¿No estás registrado? <a href="/">Sign Up</a>
+            <p className="mt-3 text-center text-white">
+              ¿No estás registrado? <Link to="/register">Registrarse</Link>
             </p>
             <button
               type="button"
-              className="btn btn-warning"
-              onClick={toggleLogin}
+              className="btn btn-primary"
+              onClick={signInHandler}
             >
-              Sign In
+              Iniciar sesión
             </button>
           </form>
         </div>
