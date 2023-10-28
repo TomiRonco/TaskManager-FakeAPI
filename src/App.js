@@ -10,6 +10,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
 import DashBoard from "./components/dashboard/DashBoard";
 import Register from "./components/register/Register";
+import NewTask from "./components/newTask/NewTask";
+import AllTasks from "./components/allTasks/AllTasks";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,6 +30,14 @@ function App() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/newTask",
+      element: <NewTask />,
+    },
+    {
+      path: "/tasks",
+      element: <AllTasks />,
     },
   ]);
   return (
