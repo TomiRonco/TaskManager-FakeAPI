@@ -12,6 +12,8 @@ import DashBoard from "./components/dashboard/DashBoard";
 import Register from "./components/register/Register";
 import NewTask from "./components/newTask/NewTask";
 import AllTasks from "./components/allTasks/AllTasks";
+import ComboLanguage from "./components/ui/comboLanguage/ComboLanguage";
+import Task from "./components/task/Task";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,8 +38,16 @@ function App() {
       element: <NewTask />,
     },
     {
-      path: "/tasks",
+      path: "/allTasks",
       element: <AllTasks />,
+    },
+    {
+      path: "/combo",
+      element: <ComboLanguage />,
+    },
+    {
+      path: "/task",
+      element: <Task />,
     },
   ]);
   return (

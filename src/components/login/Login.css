@@ -8,9 +8,18 @@
 }
 
 .custom-form {
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 50px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 50px;
 
-    background-color: rgba(0,0,0,.7);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.Toastify__toast-theme--dark {
+  --toastify-color-dark: #212529;
+  --toastify-color-progress-dark: #6f2cf3;
+  --toastify-color-progress-info: #6f2cf3;
+  --toastify-color-progress-success: #6f2cf3;
+  --toastify-color-progress-warning: #6f2cf3;
+  --toastify-color-progress-error: #6f2cf3;
 }

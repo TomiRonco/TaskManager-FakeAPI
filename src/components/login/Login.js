@@ -3,9 +3,12 @@ import { useNavigate } from "react-router";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 import "./Login.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
+import useTranslation from "../../custom/useTranslation/useTranslation";
+import { ToastContainer, toast } from "react-toastify";
 
 const initialValues = {
   email: "",
@@ -22,6 +25,13 @@ const Login = () => {
   const passwordRef = useRef(null);
 
   const navigate = useNavigate();
+  const translate = useTranslation();
+  const notifyEmail = () => {
+    toast.warn(`${translate("email_alert")}`);
+  };
+  const notifyPassword = () => {
+    toast.warn(`${translate("password_alert")}`);
+  };
 
   const emailChangeHandler = (event) => {
     if (emailRef.current.value.length > 0) {
@@ -44,14 +54,14 @@ const Login = () => {
       emailRef.current.focus();
       emailRef.current.style.borderColor = "red";
       emailRef.current.style.outline = "none";
-      alert("Correo electrónico vacío");
+      notifyEmail();
       return;
     }
     if (data.password.length === 0) {
       passwordRef.current.focus();
       passwordRef.current.style.borderColor = "red";
       passwordRef.current.style.outline = "none";
-      alert("Contraseña vacía");
+      notifyPassword();
       return;
     }
     handleLogin(data.email);
@@ -66,7 +76,7 @@ const Login = () => {
             <input
               className="form-control"
               type="email"
-              placeholder="Correo Electrónico"
+              placeholder={translate("email")}
               onChange={emailChangeHandler}
               value={data.email}
               ref={emailRef}
@@ -75,7 +85,7 @@ const Login = () => {
               <input
                 className="form-control"
                 type={data.showPassword ? "text" : "password"}
-                placeholder="Contraseña"
+                placeholder={translate("password")}
                 onChange={passwordChangeHandler}
                 value={data.password}
                 ref={passwordRef}
@@ -89,15 +99,29 @@ const Login = () => {
               </button>
             </div>
             <p className="mt-3 text-center text-white">
-              ¿No estás registrado? <Link to="/register">Registrarse</Link>
+              {translate("dont_account")}{" "}
+              <Link to="/register">{translate("create_account")}</Link>
             </p>
             <button
               type="button"
               className="btn btn-primary"
               onClick={signInHandler}
             >
-              Iniciar sesión
+              {translate("login")}
             </button>
+            <ToastContainer
+              position="top-right"
+              autoClose={4000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover={false}
+              theme="dark"
+              limit={3}
+            />
           </form>
         </div>
       </div>

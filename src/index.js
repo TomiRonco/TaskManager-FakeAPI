@@ -5,10 +5,13 @@ import "./index.css";
 
 import { AuthenticationContextProvider } from "./service/authenticationContext/authentication.context";
 import App from "./App";
+import { TranslateContextProvider } from "./service/translationContext/translation.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <AuthenticationContextProvider>
-    <App />
-  </AuthenticationContextProvider>
+  <TranslateContextProvider>
+    <AuthenticationContextProvider>
+      <App />
+    </AuthenticationContextProvider>
+  </TranslateContextProvider>
 );

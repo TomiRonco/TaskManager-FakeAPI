@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./Register.css";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 const initialValues = {
   userName: "",
@@ -17,6 +18,8 @@ const Register = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+
+  const translate = useTranslation();
 
   const userNameChangeHandler = (event) => {
     if (userNameRef.current.value.length > 0) {
@@ -36,17 +39,17 @@ const Register = () => {
 
   const passwordChangeHandler = (event) => {
     if (passwordRef.current.value.length > 0) {
-        passwordRef.current.style.borderColor = "";
-        passwordRef.current.style.outline = "";
-      }
+      passwordRef.current.style.borderColor = "";
+      passwordRef.current.style.outline = "";
+    }
     setData({ ...data, password: event.target.value });
   };
 
   const confirmPasswordChangeHandler = (event) => {
     if (confirmPasswordRef.current.value.length > 0) {
-        confirmPasswordRef.current.style.borderColor = "";
-        confirmPasswordRef.current.style.outline = "";
-      }
+      confirmPasswordRef.current.style.borderColor = "";
+      confirmPasswordRef.current.style.outline = "";
+    }
     setData({ ...data, confirmPassword: event.target.value });
   };
 
@@ -73,23 +76,26 @@ const Register = () => {
       return;
     }
     if (data.confirmPassword.length === 0) {
-        confirmPasswordRef.current.focus();
-        confirmPasswordRef.current.style.borderColor = "red";
-        confirmPasswordRef.current.style.outline = "none";
-        alert("Contraseña vacía");
-        return;
-      }
+      confirmPasswordRef.current.focus();
+      confirmPasswordRef.current.style.borderColor = "red";
+      confirmPasswordRef.current.style.outline = "none";
+      alert("Contraseña vacía");
+      return;
+    }
   };
 
   return (
-    <div className="container-fluid custom-container-register">
+    <div
+      className="container-fluid custom-container-register"
+      data-bs-theme="dark"
+    >
       <div className="d-flex justify-content-center align-items-center h-100">
         <div className="m-auto w-25 text-center">
           <form className="custom-form">
             <input
               className="form-control mb-3"
               type="text"
-              placeholder="Nombre de usuario"
+              placeholder={translate("user_name")}
               onChange={userNameChangeHandler}
               value={data.userName}
               ref={userNameRef}
@@ -97,7 +103,7 @@ const Register = () => {
             <input
               className="form-control mb-3"
               type="email"
-              placeholder="Correo Electrónico"
+              placeholder={translate("email")}
               onChange={emailChangeHandler}
               value={data.email}
               ref={emailRef}
@@ -105,7 +111,7 @@ const Register = () => {
             <input
               className="form-control mb-3"
               type="password"
-              placeholder="Contraseña"
+              placeholder={translate("password")}
               onChange={passwordChangeHandler}
               value={data.password}
               ref={passwordRef}
@@ -113,17 +119,18 @@ const Register = () => {
             <input
               className="form-control mb-3"
               type="password"
-              placeholder="Confirmar contraseña"
+              placeholder={translate("confirm_password")}
               onChange={confirmPasswordChangeHandler}
               value={data.confirmPassword}
               ref={confirmPasswordRef}
             />
             <p className="mt-3 text-center text-white">
-              ¿Estas registrado? <Link to="/login">Iniciar sesión</Link>
+              {translate("login?")}{" "}
+              <Link to="/login">{translate("login")}</Link>
             </p>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn "
               onClick={signUpHandler}
             >
               Registrarse
