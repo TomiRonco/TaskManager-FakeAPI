@@ -10,6 +10,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
 import DashBoard from "./components/dashboard/DashBoard";
 import Register from "./components/register/Register";
+import Protected from "./components/security/protected/Protected";
+import PageNotFound from "./components/security/pageNotFound/PageNotFound";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,11 +25,19 @@ function App() {
     },
     {
       path: "/home",
-      element: <DashBoard />,
+      element: (
+        <Protected>
+          <DashBoard />
+        </Protected>
+      ),
     },
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "*",
+      element: <PageNotFound />,
     },
   ]);
   return (

@@ -1,33 +1,24 @@
-import { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
-
 import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
 
-const initialValues = {
-  email: "",
-  password: "",
-  showPassword: false,
-};
-
 const Login = () => {
-  const [data, setData] = useState(initialValues);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    showPassword: false,
+  });
 
   const { handleLogin } = useContext(AuthenticationContext);
-
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
 
   const navigate = useNavigate();
 
   const emailChangeHandler = (event) => {
-    if (emailRef.current.value.length > 0) {
-      emailRef.current.style.borderColor = "";
-      emailRef.current.style.outline = "";
-    }
     setData({ ...data, email: event.target.value });
   };
 
@@ -35,27 +26,36 @@ const Login = () => {
     setData({ ...data, password: event.target.value });
   };
 
-  const passwordVisibilityToogle = () => {
+  const passwordVisibilityToggle = () => {
     setData({ ...data, showPassword: !data.showPassword });
   };
 
-  const signInHandler = () => {
-    if (emailRef.current.value.length === 0) {
-      emailRef.current.focus();
-      emailRef.current.style.borderColor = "red";
-      emailRef.current.style.outline = "none";
-      alert("Correo electrónico vacío");
+  const signInHandler = async () => {
+    if (!data.email || !data.password) {
+      toast.error("Por favor complete todos los campos");
       return;
     }
-    if (data.password.length === 0) {
-      passwordRef.current.focus();
-      passwordRef.current.style.borderColor = "red";
-      passwordRef.current.style.outline = "none";
-      alert("Contraseña vacía");
-      return;
+
+    try {
+      const response = await fetch("http://localhost:8000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast.success("Inicio de sesión exitoso");
+        handleLogin(data.email);
+        navigate("/home");
+      } else {
+        toast.error("Nombre de usuario o contraseña incorrecta");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al iniciar sesión");
     }
-    handleLogin(data.email);
-    navigate("/home");
   };
 
   return (
@@ -69,7 +69,6 @@ const Login = () => {
               placeholder="Correo Electrónico"
               onChange={emailChangeHandler}
               value={data.email}
-              ref={emailRef}
             />
             <div className="d-flex mt-3">
               <input
@@ -78,12 +77,11 @@ const Login = () => {
                 placeholder="Contraseña"
                 onChange={passwordChangeHandler}
                 value={data.password}
-                ref={passwordRef}
               />
               <button
                 className="btn btn-light"
                 type="button"
-                onClick={passwordVisibilityToogle}
+                onClick={passwordVisibilityToggle}
               >
                 {data.showPassword ? <BsEye /> : <BsEyeSlash />}
               </button>
@@ -101,6 +99,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <ToastContainer position="top-center" />
     </div>
   );
 };
