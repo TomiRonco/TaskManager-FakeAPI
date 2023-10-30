@@ -1,5 +1,7 @@
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./Register.css";
 import useTranslation from "../../custom/useTranslation/useTranslation";
@@ -8,32 +10,20 @@ const initialValues = {
   userName: "",
   email: "",
   password: "",
-  confirmPassword: "",
 };
 
 const Register = () => {
   const [data, setData] = useState(initialValues);
 
-  const userNameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const confirmPasswordRef = useRef(null);
+  const navigate = useNavigate();
 
   const translate = useTranslation();
 
   const userNameChangeHandler = (event) => {
-    if (userNameRef.current.value.length > 0) {
-      userNameRef.current.style.borderColor = "";
-      userNameRef.current.style.outline = "";
-    }
     setData({ ...data, userName: event.target.value });
   };
 
   const emailChangeHandler = (event) => {
-    if (emailRef.current.value.length > 0) {
-      emailRef.current.style.borderColor = "";
-      emailRef.current.style.outline = "";
-    }
     setData({ ...data, email: event.target.value });
   };
 
@@ -81,6 +71,34 @@ const Register = () => {
       confirmPasswordRef.current.style.outline = "none";
       alert("Contraseña vacía");
       return;
+    setData({ ...data, password: event.target.value });
+  };
+
+  const signUpHandler = async () => {
+    if (!data.userName || !data.password || !data.email) {
+      toast.error("Por favor complete todos los campos");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.status === 200) {
+        toast.success("Usuario registrado correctamente");
+        navigate("/home");
+      } else {
+        const result = await response.json();
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error en el registro");
     }
   };
 
@@ -98,7 +116,6 @@ const Register = () => {
               placeholder={translate("user_name")}
               onChange={userNameChangeHandler}
               value={data.userName}
-              ref={userNameRef}
             />
             <input
               className="form-control mb-3"
@@ -106,7 +123,6 @@ const Register = () => {
               placeholder={translate("email")}
               onChange={emailChangeHandler}
               value={data.email}
-              ref={emailRef}
             />
             <input
               className="form-control mb-3"
@@ -127,6 +143,9 @@ const Register = () => {
             <p className="mt-3 text-center text-white">
               {translate("login?")}{" "}
               <Link to="/login">{translate("login")}</Link>
+            />
+            <p className="mt-3 text-center text-white">
+              ¿Estás registrado? <Link to="/login">Iniciar sesión</Link>
             </p>
             <button
               type="button"
@@ -138,6 +157,7 @@ const Register = () => {
           </form>
         </div>
       </div>
+      <ToastContainer position="top-center" />
     </div>
   );
 };

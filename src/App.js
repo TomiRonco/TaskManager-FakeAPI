@@ -14,6 +14,8 @@ import NewTask from "./components/newTask/NewTask";
 import AllTasks from "./components/allTasks/AllTasks";
 import ComboLanguage from "./components/ui/comboLanguage/ComboLanguage";
 import Task from "./components/task/Task";
+import Protected from "./components/security/protected/Protected";
+import PageNotFound from "./components/security/pageNotFound/PageNotFound";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,7 +29,11 @@ function App() {
     },
     {
       path: "/home",
-      element: <DashBoard />,
+      element: (
+        <Protected>
+          <DashBoard />
+        </Protected>
+      ),
     },
     {
       path: "/register",
@@ -48,6 +54,8 @@ function App() {
     {
       path: "/task",
       element: <Task />,
+      path: "*",
+      element: <PageNotFound />,
     },
   ]);
   return (
