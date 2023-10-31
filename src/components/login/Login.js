@@ -47,7 +47,7 @@ const Login = () => {
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast.success("Inicio de sesión exitoso");
         handleLogin(data.email);
         navigate("/home");
