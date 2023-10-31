@@ -3,7 +3,7 @@ import { AuthenticationContext } from "../../service/authenticationContext/authe
 import { useNavigate } from "react-router";
 
 const DashBoard = () => {
-  const { handleLogout, user } = useContext(AuthenticationContext);
+  const { handleLogout } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
@@ -13,9 +13,8 @@ const DashBoard = () => {
   };
 
   return (
-    <div>
-      <h1>Hola</h1>
-      <button onClick={handleLogoutInDashBoard}>Cerrar sesión</button>
+    <div className="row">
+      <div className="col-9 bg-success">hola</div>
     </div>
   );
 };
