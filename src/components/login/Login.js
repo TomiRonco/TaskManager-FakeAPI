@@ -40,7 +40,7 @@ const Login = () => {
       return;
     }
 
-    setIsSigningIn(true); // Establecer el estado de inicio de sesión a verdadero al hacer clic en el botón
+    setIsSigningIn(true);
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Login = () => {
             handleLogin(data.email);
             navigate("/home");
           } else {
-            toast.error("Usuario desactivo");
+            toast.error("Usuario desactivado");
           }
         }
       } catch (error) {
