@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,6 +16,8 @@ const initialValues = {
 const Login = () => {
   const [data, setData] = useState(initialValues);
 
+  const [isSigningIn, setIsSigningIn] = useState(false);
+
   const { handleLogin } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
@@ -32,34 +34,45 @@ const Login = () => {
     setData({ ...data, showPassword: !data.showPassword });
   };
 
-  const signInHandler = async () => {
+  const signInHandler = () => {
     if (!data.email || !data.password) {
       toast.error("Por favor complete todos los campos");
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.status === 200) {
-        toast.success("Inicio de sesión exitoso");
-        handleLogin(data.email);
-        navigate("/home");
-      } else {
-        toast.error("Nombre de usuario o contraseña incorrecta");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error al iniciar sesión");
-    }
+    setIsSigningIn(true); // Establecer el estado de inicio de sesión a verdadero al hacer clic en el botón
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          toast.success("Inicio de sesión exitoso");
+          handleLogin(data.email);
+          navigate("/home");
+        } else {
+          toast.error("Nombre de usuario o contraseña incorrecta");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error al iniciar sesión");
+      } finally {
+        setIsSigningIn(false); // Establecer el estado de inicio de sesión a falso después de la solicitud
+      }
+    };
+
+    if (isSigningIn && data.email && data.password) {
+      fetchData();
+    }
+  }, [data, handleLogin, navigate, isSigningIn]);
   return (
     <div className="container-fluid custom-container-login">
       <div className="d-flex justify-content-center align-items-center h-100">

@@ -10,7 +10,7 @@ const taskInitialValues = {
   taskAsigment: [],
 };
 const NewTask = () => {
-  const [newTask, setNewTask] = useState(taskInitialValues); // aca deberia setear al arreglo donde esten todas las tareas
+  const [newTask, setNewTask] = useState(taskInitialValues);
 
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
