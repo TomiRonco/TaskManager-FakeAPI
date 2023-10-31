@@ -54,18 +54,19 @@ const Login = () => {
           body: JSON.stringify(data),
         });
 
-        if (response.ok) {
-          toast.success("Inicio de sesión exitoso");
-          handleLogin(data.email);
-          navigate("/home");
-        } else {
-          toast.error("Nombre de usuario o contraseña incorrecta");
+        if (response.status === 200) {
+          const responseData = await response.json();
+          if (responseData.status === true) {
+            handleLogin(data.email);
+            navigate("/home");
+          } else {
+            toast.error("Usuario desactivo");
+          }
         }
       } catch (error) {
-        console.error(error);
         toast.error("Error al iniciar sesión");
       } finally {
-        setIsSigningIn(false); // Establecer el estado de inicio de sesión a falso después de la solicitud
+        setIsSigningIn(false);
       }
     };
 
@@ -73,6 +74,7 @@ const Login = () => {
       fetchData();
     }
   }, [data, handleLogin, navigate, isSigningIn]);
+
   return (
     <div className="container-fluid custom-container-login">
       <div className="d-flex justify-content-center align-items-center h-100">
