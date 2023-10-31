@@ -12,6 +12,7 @@ import DashBoard from "./components/dashboard/DashBoard";
 import Register from "./components/register/Register";
 import Protected from "./components/security/protected/Protected";
 import PageNotFound from "./components/security/pageNotFound/PageNotFound";
+import NewTask from "./components/newTask/NewTask";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,6 +39,10 @@ function App() {
     {
       path: "*",
       element: <PageNotFound />,
+    },
+    {
+      path: "/newTask",
+      element: <NewTask />,
     },
   ]);
   return (
