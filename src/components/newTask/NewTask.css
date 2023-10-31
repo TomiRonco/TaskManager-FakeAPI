@@ -1,14 +1,16 @@
 .form {
-  border-radius: 2%;
   width: 500px;
-  color: #dee2e6;
+
   background-color: #17191a;
+  color: #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .form-control:focus,
 .form-select:valid:focus {
   box-shadow: none;
-  border: 2px solid #6f2cf3;
+  border: 2px solid #6f2cf5;
 }
 
 .button {
@@ -17,11 +19,11 @@
 }
 
 .btn {
-  background-color: #6f2cf3;
+  background-color: #6f2cf5;
 }
 
 .btn:hover {
-  background-color: #6f2cf3;
+  background-color: #6f2cf5;
 }
 
 #floatingDescription {

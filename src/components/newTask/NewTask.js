@@ -1,15 +1,13 @@
 import React, { useState, useRef } from "react";
 
 import "./NewTask.css";
-import useTranslation from "../../custom/useTranslation/useTranslation";
 
 const taskInitialValues = {
   taskName: "",
   taskDescription: "",
-  taskDeliveryDate: new Date(), // dudas si funciona bien
-  taskState: false,
-  taskId: "taskInitialValues.length", // aca deberia ser segun el arreglo donde se guarden las tareas
-  taskAsigment: "",
+  taskDeliveryDate: new Date(),
+  taskState: true,
+  taskAsigment: [],
 };
 const NewTask = () => {
   const [newTask, setNewTask] = useState(taskInitialValues); // aca deberia setear al arreglo donde esten todas las tareas
@@ -18,8 +16,6 @@ const NewTask = () => {
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
   const asigmentRef = useRef(null);
-
-  const translate = useTranslation();
 
   const newTaskNameHandler = (event) => {
     if (nameRef.current.value.length > 0) {
@@ -99,7 +95,7 @@ const NewTask = () => {
           ref={nameRef}
           onChange={newTaskNameHandler}
         ></input>
-        <label for="floatingName">{translate("task_name")}</label>
+        <label for="floatingName">Nombre</label>
       </div>
       <div class="form-floating mb-3">
         <textarea
@@ -109,7 +105,7 @@ const NewTask = () => {
           ref={descriptionRef}
           onChange={newTaskDescripcionHandler}
         ></textarea>
-        <label for="floatingDescription">{translate("description")}</label>
+        <label for="floatingDescription">Descripcion</label>
       </div>
       <div class="form-floating mb-3">
         <input
@@ -120,7 +116,7 @@ const NewTask = () => {
           type="date"
           onChange={newTaskDeliveryDateHandler}
         ></input>
-        <label for="floatingDate">{translate("deadline")}</label>
+        <label for="floatingDate">Fecha entrega</label>
       </div>
       <div class="form-floating mb-3">
         <input
@@ -130,11 +126,11 @@ const NewTask = () => {
           ref={asigmentRef}
           onChange={newTaskAsigmentHandler}
         ></input>
-        <label for="floatingAsigment">{translate("assign")}</label>
+        <label for="floatingAsigment">Asignacion</label>
       </div>
       <div class="button">
         <button class="btn mb-3" onClick={addHandler}>
-          {translate("create_task")}
+          crear
         </button>
       </div>
     </div>

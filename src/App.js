@@ -33,6 +33,10 @@ function App() {
       ),
     },
     {
+      path: "/home/addTask",
+      element: <NewTask />,
+    },
+    {
       path: "/register",
       element: <Register />,
     },
