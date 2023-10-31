@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./Register.css";
+import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
 
 const initialValues = {
   userName: "",
@@ -13,6 +14,8 @@ const initialValues = {
 
 const Register = () => {
   const [data, setData] = useState(initialValues);
+
+  const { handleLogin } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
@@ -45,6 +48,7 @@ const Register = () => {
 
       if (response.status === 200) {
         toast.success("Usuario registrado correctamente");
+        handleLogin(data.email);
         navigate("/home");
       } else {
         const result = await response.json();

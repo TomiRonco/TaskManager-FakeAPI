@@ -7,12 +7,14 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
 
+const initialValues = {
+  email: "",
+  password: "",
+  showPassword: false,
+};
+
 const Login = () => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-    showPassword: false,
-  });
+  const [data, setData] = useState(initialValues);
 
   const { handleLogin } = useContext(AuthenticationContext);
 
