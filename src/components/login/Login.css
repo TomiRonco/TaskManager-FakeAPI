@@ -1,15 +1,27 @@
-.custom-container-login {
-  width: 100%;
-  height: 100vh;
-
-  background-size: cover;
-  background-repeat: no-repeat;
+.custom-login {
+  background-color: #343541;
+  color: #444654;
 }
 
-.custom-form {
-  border: 1px solid #000;
-  border-radius: 10px;
-  padding: 50px;
+.custom-card {
+  background-color: #444654;
+}
 
-  background-color: rgba(0, 0, 0, 0.7);
+.no-border:focus {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid transparent;
+}
+
+.btn-violet {
+  background-color: #6e2bf3;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.btn-violet:hover {
+  background-color: #6e2bf3;
+  color: #fff;
 }

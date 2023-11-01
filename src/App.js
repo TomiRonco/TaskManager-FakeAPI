@@ -3,16 +3,12 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
 import Login from "./components/login/Login";
+import UserRegister from "./components/userRegister/UserRegister";
 import DashBoard from "./components/dashboard/DashBoard";
-import Register from "./components/register/Register";
 import Protected from "./components/security/protected/Protected";
 import PageNotFound from "./components/security/pageNotFound/PageNotFound";
-import NewTask from "./components/newTask/NewTask";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,6 +21,10 @@ function App() {
       element: <Login />,
     },
     {
+      path: "/register",
+      element: <UserRegister />,
+    },
+    {
       path: "/home",
       element: (
         <Protected>
@@ -33,24 +33,13 @@ function App() {
       ),
     },
     {
-      path: "/home/addTask",
-      element: <NewTask />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-    {
       path: "*",
       element: <PageNotFound />,
     },
-    {
-      path: "/newTask",
-      element: <NewTask />,
-    },
   ]);
+
   return (
-    <div className="h-100">
+    <div>
       <RouterProvider router={router} />
     </div>
   );

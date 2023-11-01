@@ -1,50 +1,46 @@
 import { useContext, useState } from "react";
-import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
+import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { useNavigate } from "react-router";
-import { BiUserCircle } from "react-icons/bi";
-import { FaTasks } from "react-icons/fa";
 
 import "./DashBoard.css";
-import NewTask from "../newTask/NewTask";
+import UserList from "../userList/UserList";
 
 const DashBoard = () => {
-  const [componentToShow, setComponentToShow] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState(null);
 
   const { handleLogout } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
-  const handleLogoutInDashBoard = () => {
+  const handleRender = (component) => {
+    setSelectedComponent(component);
+  };
+
+  const handleLogoutInDashboard = () => {
     handleLogout();
     navigate("/login");
   };
 
-  const componentChangeHandler = (component) => {
-    setComponentToShow(component);
-  };
-
   return (
-    <div className="dashboard">
-      <nav className="navbars">
-        <div className="logo">
-          <FaTasks size={30} />
-        </div>
-        <div className="navbars-icons">
-          <BiUserCircle size={40} color="white" />
-        </div>
+    <div className="vh-100 d-flex flex-column custom-background">
+      <nav className="navbar d-flex justify-content-end custom-nav">
+        <button
+          className="btn btn-violet me-5"
+          onClick={handleLogoutInDashboard}
+        >
+          Cerrar sesión
+        </button>
       </nav>
-      <div className="column">
-        <div className="column1">
-          <div className="menu">
-            <button
-              className="button-dashboard"
-              onClick={() => componentChangeHandler(<NewTask />)}
-            >
-              Agregar tarea
-            </button>
-          </div>
+      <div className="flex-grow-1 row m-0">
+        <div className="col-2 p-0 d-flex flex-column align-items-center gap-3 column1-custom">
+          <button
+            className="btn btn-violet mt-5 w-75"
+            onClick={() => handleRender(<UserList />)}
+          >
+            Lista de usuarios
+          </button>
         </div>
-        <div className="column2">{componentToShow}</div>
+        <div className="col-10 p-0">{selectedComponent}</div>
       </div>
     </div>
   );

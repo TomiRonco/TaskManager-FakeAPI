@@ -1,124 +1,103 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+
 import "./Login.css";
-import { Link } from "react-router-dom";
-import { AuthenticationContext } from "../../service/authenticationContext/authentication.context";
+import "react-toastify/dist/ReactToastify.css";
 
-const initialValues = {
-  email: "",
-  password: "",
-  showPassword: false,
-};
-
-const Login = () => {
-  const [data, setData] = useState(initialValues);
-
-  const [isSigningIn, setIsSigningIn] = useState(false);
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [users, setUsers] = useState([]);
 
   const { handleLogin } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch("http://localhost:8000/users", {
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((usersData) => {
+        setUsers(usersData);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const emailChangeHandler = (event) => {
-    setData({ ...data, email: event.target.value });
+    setEmail(event.target.value);
   };
 
   const passwordChangeHandler = (event) => {
-    setData({ ...data, password: event.target.value });
+    setPassword(event.target.value);
   };
 
-  const passwordVisibilityToggle = () => {
-    setData({ ...data, showPassword: !data.showPassword });
-  };
+  const loginButtonHandler = (event) => {
+    event.preventDefault();
 
-  const signInHandler = () => {
-    if (!data.email || !data.password) {
-      toast.error("Por favor complete todos los campos");
+    if (email === "" || password === "") {
+      toast.warning("Por favor, complete todos los campos");
       return;
     }
 
-    setIsSigningIn(true);
+    const user = users.find((user) => user.email === email);
+
+    if (!user) {
+      toast.warning("Correo electrónico incorrecto");
+      return;
+    }
+
+    if (user.password !== password) {
+      toast.warning("Contraseña incorrecta");
+      return;
+    }
+
+    if (user.status === true) {
+      handleLogin(email);
+      navigate("/home");
+    } else {
+      toast.warning("Usuario desactivado");
+    }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (response.status === 200) {
-          const responseData = await response.json();
-          if (responseData.status === true) {
-            handleLogin(data.email);
-            navigate("/home");
-          } else {
-            toast.error("Usuario desactivado");
-          }
-        }
-      } catch (error) {
-        toast.error("Error al iniciar sesión");
-      } finally {
-        setIsSigningIn(false);
-      }
-    };
-
-    if (isSigningIn && data.email && data.password) {
-      fetchData();
-    }
-  }, [data, handleLogin, navigate, isSigningIn]);
-
   return (
-    <div className="container-fluid custom-container-login">
-      <div className="d-flex justify-content-center align-items-center h-100">
-        <div className="m-auto w-25 text-center">
-          <form className="custom-form">
+    <div className="vh-100 d-flex justify-content-center align-items-center custom-login">
+      <div className="card p-5 text-center custom-card">
+        <form>
+          <div className="mb-3">
             <input
-              className="form-control"
               type="email"
-              placeholder="Correo Electrónico"
+              className="form-control no-border"
+              placeholder="Email"
               onChange={emailChangeHandler}
-              value={data.email}
+              value={email}
             />
-            <div className="d-flex mt-3">
-              <input
-                className="form-control"
-                type={data.showPassword ? "text" : "password"}
-                placeholder="Contraseña"
-                onChange={passwordChangeHandler}
-                value={data.password}
-              />
-              <button
-                className="btn btn-light"
-                type="button"
-                onClick={passwordVisibilityToggle}
-              >
-                {data.showPassword ? <BsEye /> : <BsEyeSlash />}
-              </button>
-            </div>
-            <p className="mt-3 text-center text-white">
-              ¿No estás registrado? <Link to="/register">Registrarse</Link>
-            </p>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={signInHandler}
-            >
-              Iniciar sesión
-            </button>
-          </form>
-        </div>
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              className="form-control no-border"
+              placeholder="Contraseña"
+              onChange={passwordChangeHandler}
+              value={password}
+            />
+          </div>
+
+          <button className="btn btn-violet" onClick={loginButtonHandler}>
+            Iniciar sesión
+          </button>
+          <p className="mt-2 text-white">
+            ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
+          </p>
+        </form>
       </div>
       <ToastContainer
         position="top-right"
-        autoClose={3000}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -127,9 +106,10 @@ const Login = () => {
         draggable
         pauseOnHover
         theme="dark"
+        progressStyle={{ background: "violet" }}
       />
     </div>
   );
-};
+}
 
 export default Login;
