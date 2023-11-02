@@ -57,6 +57,7 @@ function Login() {
     }
 
     if (user.status === true) {
+      localStorage.setItem("userName", user.userName);
       handleLogin(email);
       navigate("/home");
     } else {

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 
 import "./DashBoard.css";
 import UserList from "../userList/UserList";
+import AllTasks from "../allTasks/AllTasks";
+import NewTask from "../newTask/NewTask";
 
 const DashBoard = () => {
   const [selectedComponent, setSelectedComponent] = useState(null);
@@ -36,6 +38,18 @@ const DashBoard = () => {
           <button
             className="btn btn-violet mt-5 w-75"
             onClick={() => handleRender(<UserList />)}
+          >
+            Lista de usuarios
+          </button>
+          <button
+            className="btn btn-violet mt-5 w-75"
+            onClick={() => handleRender(<AllTasks />)}
+          >
+            Lista de usuarios
+          </button>
+          <button
+            className="btn btn-violet mt-5 w-75"
+            onClick={() => handleRender(<NewTask />)}
           >
             Lista de usuarios
           </button>

@@ -1,0 +1,10 @@
+.card {
+  width: 18rem;
+  min-height: 14rem;
+}
+
+/* .tasksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; 
+} */
