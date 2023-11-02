@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 
 import "./Task.css";
 
-const Task = ({ name, description, date, state, asigment }) => {
+const Task = ({ name, description, date, state, asigment, updateTask, id }) => {
   const [userName, setUserName] = useState();
 
   useEffect(() => {
     const name = localStorage.getItem("userName");
     setUserName(name);
   }, []);
-  
+
+  const handleButtonClick = () => {
+    updateTask(id);
+  };
+
   if (!state || asigment !== userName) {
     return null;
   }
@@ -20,9 +24,9 @@ const Task = ({ name, description, date, state, asigment }) => {
         <div class="card-body">
           <h5 class="card-title">Entrega {date}</h5>
           <p class="card-text">{description}</p>
-          <a href="#" class="btn">
+          <button onClick={handleButtonClick} class="btn">
             Completada
-          </a>
+          </button>
         </div>
       </div>
     </div>

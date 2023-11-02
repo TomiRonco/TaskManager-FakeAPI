@@ -58,7 +58,7 @@ const UserRegister = () => {
           email,
           password,
           userType: "user",
-          status: "true",
+          status: true,
         };
 
         fetch("http://localhost:8000/users", {

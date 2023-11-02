@@ -45,13 +45,13 @@ const DashBoard = () => {
             className="btn btn-violet mt-5 w-75"
             onClick={() => handleRender(<AllTasks />)}
           >
-            Lista de usuarios
+            Lista de tareas
           </button>
           <button
             className="btn btn-violet mt-5 w-75"
             onClick={() => handleRender(<NewTask />)}
           >
-            Lista de usuarios
+            Crear tarea
           </button>
         </div>
         <div className="col-10 p-0">
