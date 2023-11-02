@@ -23,3 +23,8 @@
   background-color: #6e2bf3;
   color: #fff;
 }
+
+.layout {
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}

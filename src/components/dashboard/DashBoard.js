@@ -40,7 +40,9 @@ const DashBoard = () => {
             Lista de usuarios
           </button>
         </div>
-        <div className="col-10 p-0">{selectedComponent}</div>
+        <div className="col-10 p-0">
+          <div className="layout">{selectedComponent}</div>
+        </div>
       </div>
     </div>
   );
