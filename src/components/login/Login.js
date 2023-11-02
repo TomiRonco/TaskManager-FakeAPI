@@ -58,6 +58,7 @@ function Login() {
 
     if (user.status === true) {
       localStorage.setItem("userName", user.userName);
+      localStorage.setItem("id", user.id);
       handleLogin(email);
       navigate("/home");
     } else {

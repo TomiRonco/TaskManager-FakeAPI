@@ -1,16 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import "./NewTask.css";
+import { ToastContainer, toast } from "react-toastify";
 
-const taskInitialValues = {
-  taskName: "",
-  taskDescription: "",
-  taskDeliveryDate: "",
-  taskState: true,
-  taskAsigment: "",
-};
 const NewTask = () => {
-  const [newTask, setNewTask] = useState(taskInitialValues);
+  const [taskName, setTaskName] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [taskDeliveryDate, setTaskDeliveryDate] = useState("");
+  const [taskAsigment, setTaskAsigment] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [nextTaskId, setNextTaskId] = useState(1);
 
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -22,7 +21,7 @@ const NewTask = () => {
       nameRef.current.style.borderColor = "";
       nameRef.current.style.outline = "";
     }
-    setNewTask({ ...newTask, taskName: event.target.value });
+    setTaskName(event.target.value);
   };
 
   const newTaskDescripcionHandler = (event) => {
@@ -30,7 +29,7 @@ const NewTask = () => {
       descriptionRef.current.style.borderColor = "";
       descriptionRef.current.style.outline = "";
     }
-    setNewTask({ ...newTask, taskDescription: event.target.value });
+    setTaskDescription(event.target.value);
   };
 
   const newTaskDeliveryDateHandler = (event) => {
@@ -38,7 +37,7 @@ const NewTask = () => {
       dateRef.current.style.borderColor = "";
       dateRef.current.style.outline = "";
     }
-    setNewTask({ ...newTask, taskDeliveryDate: event.target.value });
+    setTaskDeliveryDate(event.target.value);
   };
 
   const newTaskAsigmentHandler = (event) => {
@@ -46,112 +45,168 @@ const NewTask = () => {
       asigmentRef.current.style.borderColor = "";
       asigmentRef.current.style.outline = "";
     }
-    setNewTask({ ...newTask, taskAsigment: event.target.value });
+    setTaskAsigment(event.target.value);
   };
 
-  const addHandler = async () => {
-    if (nameRef.current.value.length === 0) {
-      nameRef.current.style.borderColor = "#96242F";
-      nameRef.current.style.outline = "none";
-    } else {
-      nameRef.current.style.borderColor = "grey";
-      nameRef.current.style.outline = "none";
-    }
+  useEffect(() => {
+    fetch("http://localhost:8000/tasks", {
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((taskData) => {
+        setTasks(taskData);
+        if (taskData.length > 0) {
+          const maxId = Math.max(...taskData.map((task) => task.id));
+          setNextTaskId(maxId + 1);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-    if (descriptionRef.current.value.length === 0) {
-      descriptionRef.current.style.borderColor = "#96242F";
-      descriptionRef.current.style.outline = "none";
-    } else {
-      descriptionRef.current.style.borderColor = "grey";
-      descriptionRef.current.style.outline = "none";
-    }
+  const addTaskHandler = () => {
+    if (
+      taskName === "" ||
+      taskDescription === "" ||
+      taskDeliveryDate === "" ||
+      taskAsigment === ""
+    ) {
+      toast.warning("Completa todos los campos");
+      if (nameRef.current.value.length === 0) {
+        nameRef.current.style.borderColor = "#96242F";
+        nameRef.current.style.outline = "none";
+      } else {
+        nameRef.current.style.borderColor = "grey";
+        nameRef.current.style.outline = "none";
+      }
 
-    if (dateRef.current.value.length === 0) {
-      // no se ve ningun cambio
-      dateRef.current.focus();
-      dateRef.current.style.borderColor = "#96242F";
-      dateRef.current.style.outline = "none";
-    } else {
-      dateRef.current.style.borderColor = "grey";
-      dateRef.current.style.outline = "none";
-    }
+      if (descriptionRef.current.value.length === 0) {
+        descriptionRef.current.style.borderColor = "#96242F";
+        descriptionRef.current.style.outline = "none";
+      } else {
+        descriptionRef.current.style.borderColor = "grey";
+        descriptionRef.current.style.outline = "none";
+      }
 
-    if (asigmentRef.current.value.length === 0) {
-      asigmentRef.current.style.borderColor = "#96242F";
-      asigmentRef.current.style.outline = "none";
-    } else {
-      asigmentRef.current.style.borderColor = "grey";
-      asigmentRef.current.style.outline = "none";
-    }
+      if (dateRef.current.value.length === 0) {
+        dateRef.current.focus();
+        dateRef.current.style.borderColor = "#96242F";
+        dateRef.current.style.outline = "none";
+      } else {
+        dateRef.current.style.borderColor = "grey";
+        dateRef.current.style.outline = "none";
+      }
 
-    try {
-      const response = await fetch("http://localhost:8000/tasks", {
+      if (asigmentRef.current.value.length === 0) {
+        asigmentRef.current.style.borderColor = "#96242F";
+        asigmentRef.current.style.outline = "none";
+      } else {
+        asigmentRef.current.style.borderColor = "grey";
+        asigmentRef.current.style.outline = "none";
+      }
+    } else {
+      const newTask = {
+        id: nextTaskId,
+        taskName,
+        taskDescription,
+        taskDeliveryDate,
+        taskState: "true",
+        taskAsigment,
+      };
+
+      fetch("http://localhost:8000/tasks", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "content-type": "application/json",
         },
         body: JSON.stringify(newTask),
-      });
-      if (response.status === 200) {
-        setNewTask(taskInitialValues);
-        alert("Tarea agregada correctamente");
-      } else {
-        console.log(newTask);
-        alert("No se pudo crear la tarea");
-      }
-    } catch (error) {
-      alert("Error al enviar tarea al servidor");
+      })
+        .then((response) => {
+          if (response.ok) return response.json();
+          else {
+            throw new Error("The response had some errors");
+          }
+        })
+        .then(() => {
+          const newTaskArray = [newTask, ...tasks];
+          setTasks(newTaskArray);
+          setTaskName("");
+          setTaskDescription("");
+          setTaskDeliveryDate("");
+          setTaskAsigment("");
+          setNextTaskId(nextTaskId + 1);
+          toast.success("Tarea creada exitosamente");
+        })
+        .catch((error) => console.log(error));
     }
   };
 
   return (
-    <div class="form" data-bs-theme="dark">
-      <div class="form-floating mb-3">
+    <div className="form" data-bs-theme="dark">
+      <div className="form-floating mb-3">
         <input
-          class="form-control"
+          className="form-control"
           id="floatingName"
           placeholder="Nombre de la tarea"
-          ref={nameRef}
           onChange={newTaskNameHandler}
+          value={taskName}
+          ref={nameRef}
         ></input>
-        <label for="floatingName">Nombre</label>
+        <label htmlFor="floatingName">Nombre</label>
       </div>
-      <div class="form-floating mb-3">
+      <div className="form-floating mb-3">
         <textarea
           id="floatingDescription"
-          class="form-control"
+          className="form-control"
           placeholder="Descripcion"
-          ref={descriptionRef}
           onChange={newTaskDescripcionHandler}
+          value={taskDescription}
+          ref={descriptionRef}
         ></textarea>
-        <label for="floatingDescription">Descripcion</label>
+        <label htmlFor="floatingDescription">Descripcion</label>
       </div>
-      <div class="form-floating mb-3">
+      <div className="form-floating mb-3">
         <input
           id="floatingDate"
-          class="form-control"
+          className="form-control"
           placeholder="Fecha de entrega"
-          ref={dateRef}
           type="date"
           onChange={newTaskDeliveryDateHandler}
+          value={taskDeliveryDate}
+          ref={dateRef}
         ></input>
-        <label for="floatingDate">Fecha entrega</label>
+        <label htmlFor="floatingDate">Fecha entrega</label>
       </div>
-      <div class="form-floating mb-3">
+      <div className="form-floating mb-3">
         <input
           id="floatingAsigment"
-          class="form-control"
+          className="form-control"
           placeholder="Asignar"
-          ref={asigmentRef}
           onChange={newTaskAsigmentHandler}
+          value={taskAsigment}
+          ref={asigmentRef}
         ></input>
-        <label for="floatingAsigment">Asignacion</label>
+        <label htmlFor="floatingAsigment">Asignacion</label>
       </div>
-      <div class="button">
-        <button class="btn mb-3" onClick={addHandler}>
+      <div className="button">
+        <button className="btn mb-3" onClick={addTaskHandler}>
           crear
         </button>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        progressStyle={{ background: "violet" }}
+      />
     </div>
   );
 };

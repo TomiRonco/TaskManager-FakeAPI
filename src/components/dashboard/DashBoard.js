@@ -55,7 +55,9 @@ const DashBoard = () => {
           </button>
         </div>
         <div className="col-10 p-0">
-          <div className="layout">{selectedComponent}</div>
+          <div className="d-flex justify-content-center align-items-center m-auto">
+            {selectedComponent}
+          </div>
         </div>
       </div>
     </div>

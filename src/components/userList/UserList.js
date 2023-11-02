@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+import "./UserList.css";
+
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
