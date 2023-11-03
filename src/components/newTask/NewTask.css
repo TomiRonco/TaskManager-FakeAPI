@@ -18,11 +18,11 @@
   justify-content: center;
 }
 
-.btn {
+.btn-primary{
   background-color: #6f2cf5;
 }
 
-.btn:hover {
+.btn-primary:hover {
   background-color: #6f2cf5;
 }
 

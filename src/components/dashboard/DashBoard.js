@@ -3,7 +3,6 @@ import { AuthenticationContext } from "../../services/authenticationContext/auth
 import { useNavigate } from "react-router";
 
 import "./DashBoard.css";
-import UserList from "../userList/UserList";
 import AllTasks from "../allTasks/AllTasks";
 import NewTask from "../newTask/NewTask";
 
@@ -35,12 +34,6 @@ const DashBoard = () => {
       </nav>
       <div className="flex-grow-1 row m-0">
         <div className="col-2 p-0 d-flex flex-column align-items-center gap-3 column1-custom">
-          <button
-            className="btn btn-violet mt-5 w-75"
-            onClick={() => handleRender(<UserList />)}
-          >
-            Lista de usuarios
-          </button>
           <button
             className="btn btn-violet mt-5 w-75"
             onClick={() => handleRender(<AllTasks />)}
