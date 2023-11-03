@@ -1,23 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { useNavigate } from "react-router";
 
 import "./DashBoard.css";
-import AllTasks from "../allTasks/AllTasks";
-import NewTask from "../newTask/NewTask";
 
-const DashBoard = () => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
-
+const DashBoard = ({ children }) => {
   const { handleLogout } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
-  const handleRender = (component) => {
-    setSelectedComponent(component);
-  };
-
   const handleLogoutInDashboard = () => {
+    localStorage.clear();
     handleLogout();
     navigate("/login");
   };
@@ -36,20 +29,20 @@ const DashBoard = () => {
         <div className="col-2 p-0 d-flex flex-column align-items-center gap-3 column1-custom">
           <button
             className="btn btn-violet mt-5 w-75"
-            onClick={() => handleRender(<AllTasks />)}
+            onClick={() => navigate("/home/listTask")}
           >
             Lista de tareas
           </button>
           <button
             className="btn btn-violet mt-5 w-75"
-            onClick={() => handleRender(<NewTask />)}
+            onClick={() => navigate("/home/addTask")}
           >
             Crear tarea
           </button>
         </div>
         <div className="col-10 p-0">
           <div className="d-flex justify-content-center align-items-center m-auto">
-            {selectedComponent}
+            {children}
           </div>
         </div>
       </div>

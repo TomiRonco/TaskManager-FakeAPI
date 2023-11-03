@@ -18,8 +18,12 @@
   justify-content: center;
 }
 
-.btn-primary{
-  background-color: #6f2cf5;
+.btn-violet {
+  background-color: #6e2bf3;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  border: none;
 }
 
 .btn-primary:hover {

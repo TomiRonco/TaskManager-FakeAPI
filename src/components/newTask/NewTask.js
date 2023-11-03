@@ -214,7 +214,7 @@ const NewTask = () => {
         <label htmlFor="floatingAsigment">Asignar a:</label>
       </div>
       <div className="button">
-        <button className="btn mb-3" onClick={addTaskHandler}>
+        <button className="btn btn-violet mb-3" onClick={addTaskHandler}>
           crear
         </button>
       </div>

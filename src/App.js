@@ -1,5 +1,6 @@
 import {
   Navigate,
+  Outlet,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
@@ -9,6 +10,8 @@ import UserRegister from "./components/userRegister/UserRegister";
 import DashBoard from "./components/dashboard/DashBoard";
 import Protected from "./components/security/protected/Protected";
 import PageNotFound from "./components/security/pageNotFound/PageNotFound";
+import AllTasks from "./components/allTasks/AllTasks";
+import NewTask from "./components/newTask/NewTask";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,9 +31,15 @@ function App() {
       path: "/home",
       element: (
         <Protected>
-          <DashBoard />
+          <DashBoard>
+            <Outlet />
+          </DashBoard>
         </Protected>
       ),
+      children: [
+        { path: "listTask", element: <AllTasks /> },
+        { path: "addTask", element: <NewTask /> },
+      ],
     },
     {
       path: "*",
