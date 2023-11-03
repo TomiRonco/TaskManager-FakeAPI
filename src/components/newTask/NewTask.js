@@ -7,7 +7,7 @@ const NewTask = () => {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDeliveryDate, setTaskDeliveryDate] = useState("");
-  const [taskAsigment, setTaskAsigment] = useState([]);
+  const [taskAsigment, setTaskAsigment] = useState("");
   const [tasks, setTasks] = useState([]);
   const [nextTaskId, setNextTaskId] = useState(1);
   const [users, setUsers] = useState([]);
@@ -125,7 +125,7 @@ const NewTask = () => {
         taskName,
         taskDescription,
         taskDeliveryDate,
-        taskState: "true",
+        taskState: true,
         taskAsigment,
       };
 
