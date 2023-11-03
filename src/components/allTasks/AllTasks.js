@@ -5,6 +5,7 @@ import "./AllTasks.css";
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
+  const userName = localStorage.getItem("userName");
 
   useEffect(() => {
     fetch("http://localhost:8000/tasks")
@@ -35,8 +36,11 @@ const AllTasks = () => {
       }
     }
   };
+  const filteredTasks = tasks.filter(
+    (task) => task.taskState === true && task.taskAsigment === userName
+  );
 
-  const tasksMapped = tasks.map((task) => (
+  const tasksMapped = filteredTasks.map((task) => (
     <Task
       name={task.taskName}
       description={task.taskDescription}
@@ -62,7 +66,13 @@ const AllTasks = () => {
         }
       }
     >
-      {tasksMapped.length > 0 ? tasksMapped : <h3>No posee tareas</h3>}
+      {tasksMapped.length > 0 ? (
+        tasksMapped
+      ) : (
+        <h1>
+          <span class="badge bg-secondary">No posee tareas asignadas</span>
+        </h1>
+      )}
     </div>
   );
 };

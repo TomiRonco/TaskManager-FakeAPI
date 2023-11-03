@@ -1,22 +1,10 @@
-import React, { useEffect, useState } from "react";
-
 import "./Task.css";
 
-const Task = ({ name, description, date, state, asigment, updateTask, id }) => {
-  const [userName, setUserName] = useState();
-
-  useEffect(() => {
-    const name = localStorage.getItem("userName");
-    setUserName(name);
-  }, []);
-
+const Task = ({ name, description, date, updateTask, id }) => {
   const handleButtonClick = () => {
     updateTask(id);
   };
 
-  if (!state || asigment !== userName) {
-    return null;
-  }
   return (
     <div className="">
       <div class="card d-flex" data-bs-theme="dark">
