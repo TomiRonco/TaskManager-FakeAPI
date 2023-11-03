@@ -10,6 +10,7 @@ const NewTask = () => {
   const [taskAsigment, setTaskAsigment] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [nextTaskId, setNextTaskId] = useState(1);
+  const [users, setUsers] = useState([]);
 
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -61,6 +62,19 @@ const NewTask = () => {
           const maxId = Math.max(...taskData.map((task) => task.id));
           setNextTaskId(maxId + 1);
         }
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/users", {
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((userData) => {
+        setUsers(userData);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -141,7 +155,7 @@ const NewTask = () => {
         .catch((error) => console.log(error));
     }
   };
-
+  const userIdFromLocalStorage = localStorage.getItem("id");
   return (
     <div className="form" data-bs-theme="dark">
       <div className="form-floating mb-3">
@@ -172,6 +186,7 @@ const NewTask = () => {
           className="form-control"
           placeholder="Fecha de entrega"
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           onChange={newTaskDeliveryDateHandler}
           value={taskDeliveryDate}
           ref={dateRef}
@@ -179,15 +194,24 @@ const NewTask = () => {
         <label htmlFor="floatingDate">Fecha entrega</label>
       </div>
       <div className="form-floating mb-3">
-        <input
+        <select
           id="floatingAsigment"
           className="form-control"
           placeholder="Asignar"
           onChange={newTaskAsigmentHandler}
           value={taskAsigment}
           ref={asigmentRef}
-        ></input>
-        <label htmlFor="floatingAsigment">Asignacion</label>
+        >
+          {users.map(
+            (user) =>
+              user.id !== parseInt(userIdFromLocalStorage, 10) && (
+                <option key={user.id} value={user.userName}>
+                  {user.userName}
+                </option>
+              )
+          )}
+        </select>
+        <label htmlFor="floatingAsigment">Asignar a:</label>
       </div>
       <div className="button">
         <button className="btn mb-3" onClick={addTaskHandler}>

@@ -1,4 +1,7 @@
-/* .tasksGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px; /* Espacio entre los elementos de la cuadrícula */
+.aviso {
+  color: #ff0000;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
