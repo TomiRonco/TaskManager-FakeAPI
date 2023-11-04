@@ -57,7 +57,7 @@ const UserRegister = () => {
           userName,
           email,
           password,
-          userType: "user",
+          userType: "user", // Asegúrate de definir el tipo de usuario aquí o obtenerlo de otra fuente
           status: true,
         };
 
@@ -70,11 +70,17 @@ const UserRegister = () => {
         })
           .then((response) => {
             if (response.ok) {
-              handleLogin(email);
-              navigate("/home");
+              return response.json();
             } else {
               toast.error("Error al registrar el usuario");
+              throw new Error("Error al registrar el usuario");
             }
+          })
+          .then((userData) => {
+            const { id, userType } = userData;
+
+            handleLogin(email, id, userName, userType);
+            navigate("/home");
           })
           .catch((error) => toast.error(error.message));
       }

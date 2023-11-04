@@ -9,9 +9,10 @@ const userValue = JSON.parse(localStorage.getItem("user"));
 export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(userValue);
 
-  const handleLogin = (email) => {
-    localStorage.setItem("user", JSON.stringify({ ...user, email }));
-    setUser({ ...user, email });
+  const handleLogin = (email, id, username, userType) => {
+    const updatedUser = { email, id, username, userType };
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
   };
 
   const handleLogout = () => {

@@ -1,13 +1,15 @@
+import { Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { Navigate } from "react-router";
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context";
 
-const Protected = ({ children }) => {
+const ProtectedHome = ({ children }) => {
   const { user } = useContext(AuthenticationContext);
 
   if (!user) {
-    return <Navigate to="/login" replace />;
-  } else return children;
+    return <Navigate to="/*" replace />;
+  }
+
+  return children;
 };
 
-export default Protected;
+export default ProtectedHome;

@@ -57,10 +57,20 @@ function Login() {
     }
 
     if (user.status === true) {
-      localStorage.setItem("userName", user.userName);
-      localStorage.setItem("id", user.id);
-      handleLogin(email);
-      navigate("/home");
+      fetch(`http://localhost:8000/users/${user.id}`, {
+        headers: {
+          accept: "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((userData) => {
+          const { userType } = userData;
+          handleLogin(email, user.id, user.userName, userType);
+          navigate("/home");
+        })
+        .catch((error) => {
+          toast.warning("Error al obtener el tipo de usuario");
+        });
     } else {
       toast.warning("Usuario desactivado");
     }

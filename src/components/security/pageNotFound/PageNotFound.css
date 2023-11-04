@@ -1,0 +1,16 @@
+.background-custom {
+  background-color: #343541;
+}
+
+.btn-violet {
+  background-color: #6e2bf3;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.btn-violet:hover {
+  background-color: #6e2bf3;
+  color: #fff;
+}

@@ -8,10 +8,14 @@ import "./App.css";
 import Login from "./components/login/Login";
 import UserRegister from "./components/userRegister/UserRegister";
 import DashBoard from "./components/dashboard/DashBoard";
-import Protected from "./components/security/protected/Protected";
 import PageNotFound from "./components/security/pageNotFound/PageNotFound";
 import AllTasks from "./components/allTasks/AllTasks";
 import NewTask from "./components/newTask/NewTask";
+import UserList from "./components/userList/UserList";
+import ProtectedSuperAdmin from "./components/security/protectedSuperAdmin/ProtectedSuperAdmin";
+import ProtectedAdmin from "./components/security/protectedAdmin/ProtectedAdmin";
+import PageNotAuthorize from "./components/security/pageNotAuthorized/PageNotAuthorize";
+import ProtectedHome from "./components/security/pretectedHome/ProtectedHome";
 
 function App() {
   const router = createBrowserRouter([
@@ -30,20 +34,42 @@ function App() {
     {
       path: "/home",
       element: (
-        <Protected>
+        <ProtectedHome>
           <DashBoard>
             <Outlet />
           </DashBoard>
-        </Protected>
+        </ProtectedHome>
       ),
       children: [
-        { path: "listTask", element: <AllTasks /> },
-        { path: "addTask", element: <NewTask /> },
+        {
+          path: "userList",
+          element: (
+            <ProtectedSuperAdmin>
+              <UserList />
+            </ProtectedSuperAdmin>
+          ),
+        },
+        {
+          path: "listTask",
+          element: <AllTasks />,
+        },
+        {
+          path: "addTask",
+          element: (
+            <ProtectedAdmin>
+              <NewTask />
+            </ProtectedAdmin>
+          ),
+        },
       ],
     },
     {
-      path: "*",
+      path: "/*",
       element: <PageNotFound />,
+    },
+    {
+      path: "/pageNotAuthorized",
+      element: <PageNotAuthorize />,
     },
   ]);
 
