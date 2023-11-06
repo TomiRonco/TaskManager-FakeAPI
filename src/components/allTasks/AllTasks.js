@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import Task from "../task/Task";
 import "./AllTasks.css";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
-  const userName = localStorage.getItem("userName");
+  let user = localStorage.getItem("user");
+
+  const translate = useTranslation();
+
+  user = JSON.parse(user);
 
   useEffect(() => {
     fetch("http://localhost:8000/tasks")
@@ -13,6 +18,29 @@ const AllTasks = () => {
       .then((data) => setTasks(data))
       .catch((error) => console.error("Error:", error));
   }, []);
+
+  const handleComentChange = async (id, newComent) => {
+    const taskToUpdate = tasks.find((task) => task.id === id);
+    if (taskToUpdate) {
+      const updatedTask = { ...taskToUpdate, taskComent: newComent };
+      const response = await fetch(
+        `http://localhost:8000/tasks/${taskToUpdate.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTask),
+        }
+      );
+
+      if (response.ok) {
+        setTasks(tasks.map((task) => (task.id === id ? updatedTask : task)));
+      } else {
+        console.error("Error:", response.statusText);
+      }
+    }
+  };
 
   const updateTask = async (id) => {
     const taskToUpdate = tasks.find((task) => task.id === id);
@@ -37,7 +65,7 @@ const AllTasks = () => {
     }
   };
   const filteredTasks = tasks.filter(
-    (task) => task.taskState === true && task.taskAsigment === userName
+    (task) => task.taskState === true && task.taskAsigment === user.username
   );
 
   const tasksMapped = filteredTasks.map((task) => (
@@ -48,29 +76,23 @@ const AllTasks = () => {
       state={task.taskState}
       asigment={task.taskAsigment}
       id={task.id}
+      coment={task.taskComent}
       updateTask={updateTask}
+      handleComentChange={handleComentChange}
     />
   ));
 
   return (
-    <div
-      className="tasksGrid"
-      style={
-        {
-          // maxHeight: "600px",
-          // maxWidth: "1200px",
-          // overflow: "auto",
-          // display: "flex",
-          // flexDirection: "row",
-          // justifyContent: "space-between",
-        }
-      }
-    >
+    <div className="tasksGrid">
       {tasksMapped.length > 0 ? (
         tasksMapped
       ) : (
         <h1>
-          <span class="badge bg-secondary">No posee tareas asignadas</span>
+          <span className="badge bg-secondary">
+            {translate("")}
+            {user.username}
+            <p>{translate("You_have_no_assigned_tasks")}</p>
+          </span>
         </h1>
       )}
     </div>

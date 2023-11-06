@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 import "./UserRegister.css";
 
@@ -15,6 +16,7 @@ const UserRegister = () => {
   const { handleLogin } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
+  const translate = useTranslation();
 
   const userNameChangeHandler = (event) => {
     setUserName(event.target.value);
@@ -49,15 +51,15 @@ const UserRegister = () => {
       const isEmailTaken = users.some((user) => user.email === email);
 
       if (isUsernameTaken) {
-        toast.warning("Nombre de usuario en uso");
+        toast.warning(translate("Username_in_use"));
       } else if (isEmailTaken) {
-        toast.warning("Correo electrónico en uso");
+        toast.warning(translate("Email_in_use"));
       } else {
         const newUser = {
           userName,
           email,
           password,
-          userType: "user", // Asegúrate de definir el tipo de usuario aquí o obtenerlo de otra fuente
+          userType: "user",
           status: true,
         };
 
@@ -72,8 +74,8 @@ const UserRegister = () => {
             if (response.ok) {
               return response.json();
             } else {
-              toast.error("Error al registrar el usuario");
-              throw new Error("Error al registrar el usuario");
+              toast.error(translate("Error_registering_user"));
+              throw new Error(translate("Error_registering_user"));
             }
           })
           .then((userData) => {
@@ -85,7 +87,7 @@ const UserRegister = () => {
           .catch((error) => toast.error(error.message));
       }
     } else {
-      toast.warning("Por favor, complete todos los campos");
+      toast.warning(translate("complete_all_fields"));
     }
   };
 
@@ -97,7 +99,7 @@ const UserRegister = () => {
             <input
               type="text"
               className="form-control no-border"
-              placeholder="Nombre de usuario"
+              placeholder={translate("user_name")}
               onChange={userNameChangeHandler}
               value={userName}
             />
@@ -115,7 +117,7 @@ const UserRegister = () => {
             <input
               type="password"
               className="form-control no-border"
-              placeholder="Contraseña"
+              placeholder={translate("password")}
               onChange={passwordChangeHandler}
               value={password}
             />
@@ -125,7 +127,8 @@ const UserRegister = () => {
             Crear cuenta
           </button>
           <p className="mt-2 text-white">
-            ¿Ya tienes una cuenta? <Link to="/login">Iniciar sesión</Link>
+            {translate("have_account")}{" "}
+            <Link to="/login">{translate("log_in")}</Link>
           </p>
         </form>
       </div>

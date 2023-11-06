@@ -6,6 +6,7 @@ import { FiEdit2 } from "react-icons/fi";
 
 import AddUser from "../addUser/AddUser";
 import EditUserModal from "../editUserModal/EditUserModal";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -15,6 +16,7 @@ function UserList() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const translate = useTranslation();
 
   // Definimos el estado inicial del formulario
   const initialFormData = {
@@ -55,11 +57,11 @@ function UserList() {
         .then(() => {
           const updatedUsers = users.filter((user) => user.id !== userId);
           setUsers(updatedUsers);
-          toast.success("Usuario eliminado correctamente");
+          toast.success(translate("deleted_user"));
         })
         .catch((error) => console.log(error));
     } else {
-      toast.warning("No tienes permisos para eliminar usuarios.");
+      toast.warning(translate("not_permissions_deleted"));
     }
   };
 
@@ -91,9 +93,9 @@ function UserList() {
     const userType = formData.userType === "Admin" ? "Admin" : "user";
 
     if (isExistingUserName) {
-      toast.error("Nombre de usuario en uso");
+      toast.error(translate("Username_in_use"));
     } else if (isExistingEmail) {
-      toast.error("Correo electrónico en uso");
+      toast.error(translate("Email_in_use"));
     } else {
       const updatedFormData = {
         ...formData,
@@ -110,13 +112,13 @@ function UserList() {
         .then((response) => response.json())
         .then((newUser) => {
           setUsers([...users, newUser]);
-          toast.success("Usuario agregado correctamente");
+          toast.success(translate("successsfully_added"));
           // Restablece editingUser a null para evitar la edición accidental
           setEditingUser(null);
         })
         .catch((error) => {
-          console.error("Error al agregar usuario:", error);
-          toast.error("Error al agregar usuario");
+          console.error(translate("error_adding"), error);
+          toast.error(translate("error_adding"));
         });
 
       setIsAddUserModalOpen(false);
@@ -135,22 +137,21 @@ function UserList() {
       <button
         className="btn btn-violet mb-3"
         onClick={() => {
-          // Al abrir el modal de agregar usuario, reseteamos el formulario
           setFormData(initialFormData);
           setIsAddUserModalOpen(true);
         }}
       >
-        Agregar Usuario
+        {translate("add_user")}
       </button>
       <table className="table table-dark text-center rounded">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nombre de usuario</th>
-            <th>Correo Electrónico</th>
-            <th>Contraseña</th>
-            <th>Tipo de usuario</th>
-            <th>Acciones</th>
+            <th>{translate("user_name")}</th>
+            <th>{translate("email")}</th>
+            <th>{translate("password")}</th>
+            <th>{translate("user_type")}</th>
+            <th>{translate("actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -159,7 +160,7 @@ function UserList() {
               <td>
                 {user.id !== authenticatedUserId
                   ? user.id
-                  : "Usuario autenticado"}
+                  : translate("authenticated")}
               </td>
               <td>{user.userName}</td>
               <td>{user.email}</td>

@@ -2,20 +2,24 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./NewTask.css";
 import { ToastContainer, toast } from "react-toastify";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 const NewTask = () => {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDeliveryDate, setTaskDeliveryDate] = useState("");
-  const [taskAsigment, setTaskAsigment] = useState([]);
+  const [taskAsigment, setTaskAsigment] = useState("");
   const [tasks, setTasks] = useState([]);
   const [nextTaskId, setNextTaskId] = useState(1);
   const [users, setUsers] = useState([]);
+  const [taskComent, setTaskComent] = useState();
 
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
   const asigmentRef = useRef(null);
+
+  const translate = useTranslation();
 
   const newTaskNameHandler = (event) => {
     if (nameRef.current.value.length > 0) {
@@ -23,6 +27,7 @@ const NewTask = () => {
       nameRef.current.style.outline = "";
     }
     setTaskName(event.target.value);
+    setTaskComent("");
   };
 
   const newTaskDescripcionHandler = (event) => {
@@ -86,7 +91,7 @@ const NewTask = () => {
       taskDeliveryDate === "" ||
       taskAsigment === ""
     ) {
-      toast.warning("Completa todos los campos");
+      toast.warning(translate("complete_all_fields"));
       if (nameRef.current.value.length === 0) {
         nameRef.current.style.borderColor = "#96242F";
         nameRef.current.style.outline = "none";
@@ -125,8 +130,9 @@ const NewTask = () => {
         taskName,
         taskDescription,
         taskDeliveryDate,
-        taskState: "true",
+        taskState: true,
         taskAsigment,
+        taskComent,
       };
 
       fetch("http://localhost:8000/tasks", {
@@ -150,12 +156,16 @@ const NewTask = () => {
           setTaskDeliveryDate("");
           setTaskAsigment("");
           setNextTaskId(nextTaskId + 1);
-          toast.success("Tarea creada exitosamente");
+          setTaskComent("");
+          toast.success(translate("trask_created"));
         })
         .catch((error) => console.log(error));
     }
   };
-  const userIdFromLocalStorage = localStorage.getItem("id");
+
+  const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const userNameFromLocalStorage = userFromLocalStorage.username;
+
   return (
     <div className="form" data-bs-theme="dark">
       <div className="form-floating mb-3">
@@ -167,7 +177,7 @@ const NewTask = () => {
           value={taskName}
           ref={nameRef}
         ></input>
-        <label htmlFor="floatingName">Nombre</label>
+        <label htmlFor="floatingName">{translate("name")}</label>
       </div>
       <div className="form-floating mb-3">
         <textarea
@@ -178,7 +188,7 @@ const NewTask = () => {
           value={taskDescription}
           ref={descriptionRef}
         ></textarea>
-        <label htmlFor="floatingDescription">Descripcion</label>
+        <label htmlFor="floatingDescription">{translate("description")}</label>
       </div>
       <div className="form-floating mb-3">
         <input
@@ -191,7 +201,7 @@ const NewTask = () => {
           value={taskDeliveryDate}
           ref={dateRef}
         ></input>
-        <label htmlFor="floatingDate">Fecha entrega</label>
+        <label htmlFor="floatingDate">{translate("deliver_date")}</label>
       </div>
       <div className="form-floating mb-3">
         <select
@@ -202,20 +212,24 @@ const NewTask = () => {
           value={taskAsigment}
           ref={asigmentRef}
         >
+          <option value="" disabled>
+            Seleccionar usuario
+          </option>
           {users.map(
             (user) =>
-              user.id !== parseInt(userIdFromLocalStorage, 10) && (
+              user.userName !== userNameFromLocalStorage && (
                 <option key={user.id} value={user.userName}>
                   {user.userName}
                 </option>
               )
           )}
         </select>
-        <label htmlFor="floatingAsigment">Asignar a:</label>
+        <label htmlFor="floatingAsigment">{translate("assign")}:</label>
       </div>
+
       <div className="button">
         <button className="btn btn-violet mb-3" onClick={addTaskHandler}>
-          crear
+          {translate("create")}
         </button>
       </div>
       <ToastContainer

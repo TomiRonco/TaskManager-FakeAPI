@@ -2,8 +2,11 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 function AddUser({ show, onHide, onAddUser, formData, onFormChange }) {
+  const translate = useTranslation();
+
   const isFormValid = () => {
     return (
       formData.userName.trim() !== "" &&
@@ -15,12 +18,12 @@ function AddUser({ show, onHide, onAddUser, formData, onFormChange }) {
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Agregar Usuario</Modal.Title>
+        <Modal.Title>{translate("add_user")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group>
-            <Form.Label>Nombre de Usuario:</Form.Label>
+            <Form.Label>{translate("user_name")}:</Form.Label>
             <Form.Control
               type="text"
               name="userName"
@@ -29,7 +32,7 @@ function AddUser({ show, onHide, onAddUser, formData, onFormChange }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Correo Electrónico:</Form.Label>
+            <Form.Label>{translate("email")}:</Form.Label>
             <Form.Control
               type="text"
               name="email"
@@ -38,7 +41,7 @@ function AddUser({ show, onHide, onAddUser, formData, onFormChange }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Contraseña:</Form.Label>
+            <Form.Label>{translate("password")}:</Form.Label>
             <Form.Control
               type="password"
               name="password"
@@ -47,7 +50,7 @@ function AddUser({ show, onHide, onAddUser, formData, onFormChange }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Tipo de Usuario:</Form.Label>
+            <Form.Label>{translate("user_type")}:</Form.Label>
             <Form.Control
               as="select"
               name="userType"
@@ -62,10 +65,10 @@ function AddUser({ show, onHide, onAddUser, formData, onFormChange }) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cerrar
+          {translate("close")}
         </Button>
         <Button variant="primary" onClick={onAddUser} disabled={!isFormValid()}>
-          Agregar
+          {translate("add")}
         </Button>
       </Modal.Footer>
     </Modal>

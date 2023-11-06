@@ -1,23 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { useNavigate, useLocation } from "react-router-dom";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 import "./DashBoard.css";
 
 import { Link } from "react-router-dom";
+import ComboLanguage from "../ui/comboLanguage/ComboLanguage";
 
 const DashBoard = ({ children }) => {
   const { handleLogout } = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [language, setLanguage] = useState("Es");
-
-  const handleLanguageToggle = () => {
-    if (language === "Es") {
-      setLanguage("En");
-    }
-  };
+  const translate = useTranslation();
 
   const handleLogoutInDashboard = () => {
     localStorage.clear();
@@ -35,7 +31,7 @@ const DashBoard = ({ children }) => {
               location.pathname === "/home/userList" ? "active" : ""
             } me-3`}
           >
-            Lista de usuario
+            {translate("user_List")}
           </Link>
 
           <Link
@@ -44,7 +40,7 @@ const DashBoard = ({ children }) => {
               location.pathname === "/home/addTask" ? "active" : ""
             } me-3`}
           >
-            Crear tarea
+            {translate("create_task")}
           </Link>
           <Link
             to="/home/listTask"
@@ -52,21 +48,16 @@ const DashBoard = ({ children }) => {
               location.pathname === "/home/listTask" ? "active" : ""
             } me-3`}
           >
-            Ver mis tareas
+            {translate("tasks")}
           </Link>
         </div>
-        <div>
-          <button
-            className="btn btn-violet me-2"
-            onClick={handleLanguageToggle}
-          >
-            {language}
-          </button>
+        <div className="d-flex">
+          <ComboLanguage />
           <button
             className="btn btn-violet me-5"
             onClick={handleLogoutInDashboard}
           >
-            Cerrar sesión
+            {translate("sign_off")}
           </button>
         </div>
       </nav>

@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 function EditUserModal({
   show,
@@ -13,8 +14,10 @@ function EditUserModal({
   users,
   setUsers,
 }) {
+  const translate = useTranslation();
+
   if (!userToEdit) {
-    return null; // Si userToEdit es nulo, no mostramos nada
+    return null;
   }
 
   const handleSaveChanges = () => {
@@ -27,16 +30,14 @@ function EditUserModal({
     })
       .then((response) => response.json())
       .then((editedUser) => {
-        // Actualiza el estado 'users' con el usuario editado
         const updatedUsers = users.map((user) =>
           user.id === editedUser.id ? editedUser : user
         );
         setUsers(updatedUsers);
-        toast.success("Usuario actualizado correctamente");
+        toast.success(translate("Successfully_updated_user"));
       })
       .catch((error) => {
-        console.error("Error al editar usuario:", error);
-        toast.error("Error al editar usuario");
+        toast.error("Error al editar usuario:");
       });
 
     onHide();
@@ -45,12 +46,12 @@ function EditUserModal({
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Editar Usuario</Modal.Title>
+        <Modal.Title>{translate("user_edit")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group>
-            <Form.Label>Nombre de Usuario:</Form.Label>
+            <Form.Label>{translate("user_name")}</Form.Label>
             <Form.Control
               type="text"
               name="userName"
@@ -59,7 +60,7 @@ function EditUserModal({
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Correo Electrónico:</Form.Label>
+            <Form.Label>{translate("email")}</Form.Label>
             <Form.Control
               type="text"
               name="email"
@@ -68,7 +69,7 @@ function EditUserModal({
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Contraseña:</Form.Label>
+            <Form.Label>{translate("password")}</Form.Label>
             <Form.Control
               type="password"
               name="password"
@@ -77,7 +78,7 @@ function EditUserModal({
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Tipo de Usuario:</Form.Label>
+            <Form.Label>{translate("user_type")}</Form.Label>
             <Form.Control
               as="select"
               name="userType"
@@ -92,10 +93,10 @@ function EditUserModal({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Cerrar
+          {translate("close")}
         </Button>
         <Button variant="primary" onClick={handleSaveChanges}>
-          Guardar Cambios
+          {translate("save_change")}
         </Button>
       </Modal.Footer>
     </Modal>

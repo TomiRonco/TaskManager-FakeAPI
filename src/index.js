@@ -4,10 +4,13 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import { AuthenticationContextProvider } from "./services/authenticationContext/authentication.context";
+import { TranslateContextProvider } from "./services/translationContext/translation.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <AuthenticationContextProvider>
-    <App />
-  </AuthenticationContextProvider>
+  <TranslateContextProvider>
+    <AuthenticationContextProvider>
+      <App />
+    </AuthenticationContextProvider>
+  </TranslateContextProvider>
 );

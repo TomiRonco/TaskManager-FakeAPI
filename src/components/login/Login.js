@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import useTranslation from "../../custom/useTranslation/useTranslation";
 
 import "./Login.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +15,7 @@ function Login() {
   const { handleLogin } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
+  const translate = useTranslation();
 
   useEffect(() => {
     fetch("http://localhost:8000/users", {
@@ -40,19 +42,19 @@ function Login() {
     event.preventDefault();
 
     if (email === "" || password === "") {
-      toast.warning("Por favor, complete todos los campos");
+      toast.warning(translate("complete_all_fields"));
       return;
     }
 
     const user = users.find((user) => user.email === email);
 
     if (!user) {
-      toast.warning("Correo electrónico incorrecto");
+      toast.warning(translate("wrong_email"));
       return;
     }
 
     if (user.password !== password) {
-      toast.warning("Contraseña incorrecta");
+      toast.warning(translate("wrong_password"));
       return;
     }
 
@@ -69,10 +71,10 @@ function Login() {
           navigate("/home");
         })
         .catch((error) => {
-          toast.warning("Error al obtener el tipo de usuario");
+          toast.warning(translate("error_user_type"));
         });
     } else {
-      toast.warning("Usuario desactivado");
+      toast.warning(translate("deactivated_user"));
     }
   };
 
@@ -93,17 +95,18 @@ function Login() {
             <input
               type="password"
               className="form-control no-border"
-              placeholder="Contraseña"
+              placeholder={translate("password")}
               onChange={passwordChangeHandler}
               value={password}
             />
           </div>
 
           <button className="btn btn-violet" onClick={loginButtonHandler}>
-            Iniciar sesión
+            {translate("log_in")}
           </button>
           <p className="mt-2 text-white">
-            ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
+            {translate("not_account")}{" "}
+            <Link to="/register">{translate("sign_up")}</Link>
           </p>
         </form>
       </div>
