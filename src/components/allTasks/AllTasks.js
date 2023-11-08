@@ -7,10 +7,9 @@ import useTranslation from "../../custom/useTranslation/useTranslation";
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
   let user = localStorage.getItem("user");
+  user = JSON.parse(user);
 
   const translate = useTranslation();
-
-  user = JSON.parse(user);
 
   useEffect(() => {
     fetch("http://localhost:8000/tasks")
@@ -64,21 +63,33 @@ const AllTasks = () => {
       }
     }
   };
-  const filteredTasks = tasks.filter(
-    (task) => task.taskState === true && task.taskAsigment === user.username
-  );
+
+  let filteredTasks;
+
+  if (user.userType === "Admin") {
+    filteredTasks = tasks.filter((task) => task.creatorName === user.username);
+  } else if (user.userType === "superAdmin") {
+    filteredTasks = tasks;
+  } else {
+    filteredTasks = tasks.filter(
+      (task) => task.taskState === true && task.taskAsigment === user.username
+    );
+  }
 
   const tasksMapped = filteredTasks.map((task) => (
     <Task
+      key={task.id}
       name={task.taskName}
       description={task.taskDescription}
       date={task.taskDeliveryDate}
       state={task.taskState}
       asigment={task.taskAsigment}
+      assignedUser={task.taskAsigment}
       id={task.id}
       coment={task.taskComent}
       updateTask={updateTask}
       handleComentChange={handleComentChange}
+      userType={user.userType}
     />
   ));
 

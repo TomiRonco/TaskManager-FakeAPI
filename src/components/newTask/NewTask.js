@@ -133,6 +133,7 @@ const NewTask = () => {
         taskState: true,
         taskAsigment,
         taskComent,
+        creatorName: userNameFromLocalStorage,
       };
 
       fetch("http://localhost:8000/tasks", {
@@ -157,7 +158,7 @@ const NewTask = () => {
           setTaskAsigment("");
           setNextTaskId(nextTaskId + 1);
           setTaskComent("");
-          toast.success(translate("trask_created"));
+          toast.success(translate("task_created"));
         })
         .catch((error) => console.log(error));
     }

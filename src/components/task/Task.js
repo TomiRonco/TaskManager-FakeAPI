@@ -13,6 +13,9 @@ const Task = ({
   id,
   coment,
   handleComentChange: comentChangeHandler,
+  userType,
+  assignedUser,
+  state,
 }) => {
   const [newComent, setNewComent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -29,10 +32,6 @@ const Task = ({
     }
   };
 
-  const buttonClickHandler = () => {
-    updateTask(id);
-  };
-
   const deleteClickHandler = () => {
     comentChangeHandler(id, "");
     setIsEditing(true);
@@ -43,17 +42,40 @@ const Task = ({
       <div class="card d-flex" data-bs-theme="dark">
         <h5 class="card-header d-flex justify-content-between text">
           {name}
-          <button onClick={buttonClickHandler} class="btn succes">
-            <FiCheck size={20} />
-          </button>
+          {userType !== "Admin" && userType !== "superAdmin" && (
+            <button onClick={() => updateTask(id)} class="btn succes">
+              <FiCheck size={20} />
+            </button>
+          )}
         </h5>
         <div class="card-body">
           <h5 class="card-title">
             {translate("delivery")}: {date}
           </h5>
           <hr />
-          <p class="card-text"> {description}</p>
-          {isEditing || coment === "" ? (
+          {userType === "Admin" && (
+            <p>
+              {translate("assigned_to")}: {assignedUser}
+              <hr />
+              {translate("state")}:{" "}
+              {state ? translate("incomplete") : translate("finished")}
+            </p>
+          )}
+          {userType === "superAdmin" && (
+            <p>
+              {translate("assigned_to")}: {assignedUser}
+              <hr />
+              {translate("state")}:{" "}
+              {state ? translate("incomplete") : translate("finished")}
+            </p>
+          )}
+          <p></p>
+          <p class="card-text">
+            {translate("description")}: {description}
+          </p>
+          {userType !== "Admin" &&
+          userType !== "superAdmin" &&
+          (isEditing || coment === "") ? (
             <div className="text-center">
               <input
                 value={newComent}
@@ -69,21 +91,25 @@ const Task = ({
             </div>
           ) : (
             <div className="d-flex justify-content-between align-items-end">
-              <p className="mt-3">{coment}</p>
-              <div>
-                <button
-                  className="btn btn-violet mb-2"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <FiEdit2 color="white" />
-                </button>
-                <button
-                  className="btn btn-danger mb-2 mx-1"
-                  onClick={deleteClickHandler}
-                >
-                  <FiTrash2 color="white" />
-                </button>
-              </div>
+              <p className="mt-3">
+                {translate("comment")}: {coment}
+              </p>
+              {userType !== "Admin" && userType !== "superAdmin" && (
+                <div>
+                  <button
+                    className="btn btn-violet mb-2"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <FiEdit2 color="white" />
+                  </button>
+                  <button
+                    className="btn btn-danger mb-2 mx-1"
+                    onClick={deleteClickHandler}
+                  >
+                    <FiTrash2 color="white" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

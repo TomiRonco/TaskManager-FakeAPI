@@ -63,7 +63,7 @@ export const dictionary_translations = {
       value: "Agregar",
     },
     {
-      key: "trask_created",
+      key: "task_created",
       value: "Tarea creada exitosamente",
     },
     {
@@ -117,6 +117,26 @@ export const dictionary_translations = {
     {
       key: "Successfully_updated_user",
       value: "Usuario actualizado correctamente",
+    },
+    {
+      key: "assigned_to",
+      value: "Asignada a",
+    },
+    {
+      key: "state",
+      value: "Estado",
+    },
+    {
+      key: "incomplete",
+      value: "Incompleta",
+    },
+    {
+      key: "finished",
+      value: "Terminada",
+    },
+    {
+      key: "comment",
+      value: "Comentario",
     },
   ],
   en: [
@@ -180,7 +200,7 @@ export const dictionary_translations = {
       value: "Add",
     },
     {
-      key: "trask_created",
+      key: "task_created",
       value: "Task created successfully",
     },
     {
@@ -238,6 +258,26 @@ export const dictionary_translations = {
     {
       key: "Successfully_updated_user",
       value: "Successfully updated user",
+    },
+    {
+      key: "assigned_to",
+      value: "Assigned to",
+    },
+    {
+      key: "state",
+      value: "State",
+    },
+    {
+      key: "incomplete",
+      value: "Incomplete",
+    },
+    {
+      key: "finished",
+      value: "Finished",
+    },
+    {
+      key: "comment",
+      value: "Comment",
     },
   ],
 };
