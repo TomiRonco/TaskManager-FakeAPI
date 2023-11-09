@@ -12,7 +12,7 @@ const AllTasks = () => {
   const translate = useTranslation();
 
   useEffect(() => {
-    fetch("http://localhost:8000/tasks")
+    fetch("https://taskmanaggerapi.onrender.com/tasks")
       .then((response) => response.json())
       .then((data) => setTasks(data))
       .catch((error) => console.error("Error:", error));
@@ -23,7 +23,7 @@ const AllTasks = () => {
     if (taskToUpdate) {
       const updatedTask = { ...taskToUpdate, taskComent: newComent };
       const response = await fetch(
-        `http://localhost:8000/tasks/${taskToUpdate.id}`,
+        `https://taskmanaggerapi.onrender.com/tasks/${taskToUpdate.id}`,
         {
           method: "PUT",
           headers: {
@@ -46,7 +46,7 @@ const AllTasks = () => {
     if (taskToUpdate) {
       const updatedTask = { ...taskToUpdate, taskState: false };
       const response = await fetch(
-        `http://localhost:8000/tasks/${taskToUpdate.id}`,
+        `https://taskmanaggerapi.onrender.com/tasks/${taskToUpdate.id}`,
         {
           method: "PUT",
           headers: {

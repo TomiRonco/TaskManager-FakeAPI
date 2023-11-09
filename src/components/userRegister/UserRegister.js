@@ -31,7 +31,7 @@ const UserRegister = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/users", {
+    fetch("https://taskmanaggerapi.onrender.com/users", {
       headers: {
         accept: "application/json",
       },
@@ -63,7 +63,7 @@ const UserRegister = () => {
           status: true,
         };
 
-        fetch("http://localhost:8000/users", {
+        fetch("https://taskmanaggerapi.onrender.com/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

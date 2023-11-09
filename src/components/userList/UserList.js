@@ -29,7 +29,7 @@ function UserList() {
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
-    fetch("http://localhost:8000/users", {
+    fetch("https://taskmanaggerapi.onrender.com/users", {
       headers: {
         accept: "application/json",
       },
@@ -46,7 +46,7 @@ function UserList() {
 
   const desactivateUserHandler = (userId, userType) => {
     if (authenticatedUserType === "superAdmin") {
-      fetch(`http://localhost:8000/users/${userId}`, {
+      fetch(`https://taskmanaggerapi.onrender.com/users/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -102,7 +102,7 @@ function UserList() {
         userType,
       };
 
-      fetch("http://localhost:8000/users", {
+      fetch("https://taskmanaggerapi.onrender.com/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

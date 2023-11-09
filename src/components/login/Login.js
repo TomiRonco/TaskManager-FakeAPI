@@ -18,7 +18,7 @@ function Login() {
   const translate = useTranslation();
 
   useEffect(() => {
-    fetch("http://localhost:8000/users", {
+    fetch("https://taskmanaggerapi.onrender.com/users", {
       headers: {
         accept: "application/json",
       },
@@ -59,7 +59,7 @@ function Login() {
     }
 
     if (user.status === true) {
-      fetch(`http://localhost:8000/users/${user.id}`, {
+      fetch(`https://taskmanaggerapi.onrender.com/users/${user.id}`, {
         headers: {
           accept: "application/json",
         },

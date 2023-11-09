@@ -55,7 +55,7 @@ const NewTask = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8000/tasks", {
+    fetch("https://taskmanaggerapi.onrender.com/tasks", {
       headers: {
         accept: "application/json",
       },
@@ -72,7 +72,7 @@ const NewTask = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/users", {
+    fetch("https://taskmanaggerapi.onrender.com/users", {
       headers: {
         accept: "application/json",
       },
@@ -136,7 +136,7 @@ const NewTask = () => {
         creatorName: userNameFromLocalStorage,
       };
 
-      fetch("http://localhost:8000/tasks", {
+      fetch("https://taskmanaggerapi.onrender.com/tasks", {
         method: "POST",
         headers: {
           "content-type": "application/json",

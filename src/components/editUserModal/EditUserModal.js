@@ -21,7 +21,7 @@ function EditUserModal({
   }
 
   const handleSaveChanges = () => {
-    fetch(`http://localhost:8000/users/${userToEdit.id}`, {
+    fetch(`https://taskmanaggerapi.onrender.com/users/${userToEdit.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
