@@ -12,6 +12,8 @@ const DashBoard = ({ children }) => {
   const { handleLogout } = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const location = useLocation();
+  let user = localStorage.getItem("user");
+  user = JSON.parse(user);
 
   const translate = useTranslation();
 
@@ -25,23 +27,37 @@ const DashBoard = ({ children }) => {
     <div className="vh-100 custom-background">
       <nav className="navbar custom-nav">
         <div className="d-flex ms-5 custom-nav-link">
-          <Link
-            to="/home/userList"
-            className={`nav-link ${
-              location.pathname === "/home/userList" ? "active" : ""
-            } me-3`}
-          >
-            {translate("user_List")}
-          </Link>
+          {user.userType === "superAdmin" && (
+            <Link
+              to="/home/userList"
+              className={`nav-link ${
+                location.pathname === "/home/userList" ? "active" : ""
+              } me-3`}
+            >
+              {translate("user_List")}
+            </Link>
+          )}
 
-          <Link
-            to="/home/addTask"
-            className={`nav-link ${
-              location.pathname === "/home/addTask" ? "active" : ""
-            } me-3`}
-          >
-            {translate("create_task")}
-          </Link>
+          {user.userType === "superAdmin" && (
+            <Link
+              to="/home/addTask"
+              className={`nav-link ${
+                location.pathname === "/home/addTask" ? "active" : ""
+              } me-3`}
+            >
+              {translate("create_task")}
+            </Link>
+          )}
+          {user.userType === "Admin" && (
+            <Link
+              to="/home/addTask"
+              className={`nav-link ${
+                location.pathname === "/home/addTask" ? "active" : ""
+              } me-3`}
+            >
+              {translate("create_task")}
+            </Link>
+          )}
           <Link
             to="/home/listTask"
             className={`nav-link ${
